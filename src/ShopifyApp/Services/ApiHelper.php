@@ -35,15 +35,16 @@ class ApiHelper implements IApiHelper
     /**
      * {@inheritdoc}
      */
-    public function make(ApiSessionTransfer $session = null): self
+    public function make(ApiSessionTransfer $session = null, string $shop = null): self
     {
+        // Try to get the api key and secret from shop (if custom mode is on) or from config
+        $apiKey = $this->getConfig('custom_app_mode') ? $this->getConfigApiKey($shop) : $this->getConfig('api_key');
+        $apiSecret = $this->getConfig('custom_app_mode') ? $this->getConfigApiSecret($shop) : $this->getConfig('api_secret');
+
         // Create the instance
         $apiClass = $this->getConfig('api_class');
         $this->api = new $apiClass();
-        $this->api
-            ->setApiKey($this->getConfigApiKey($session->domain->toNative()))
-            ->setApiSecret($this->getConfigApiSecret($session->domain->toNative()))
-            ->setVersion($this->getConfig('api_version'));
+        $this->api->setApiKey($apiKey)->setApiSecret($apiSecret)->setVersion($this->getConfig('api_version'));
 
         // Enable basic rate limiting?
         if ($this->getConfig('api_rate_limiting_enabled') === true) {

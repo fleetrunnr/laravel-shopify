@@ -106,7 +106,7 @@ class AuthenticateShop
         }
 
         // Determine if the HMAC is correct
-        $this->apiHelper->make();
+        $this->apiHelper->make(null, $request->get('shop'));
         if (!$this->apiHelper->verifyRequest($request->all())) {
             // Go to login, something is wrong
             return [$result, null];

@@ -126,7 +126,7 @@ trait ShopModel
             $session->domain = $this->getDomain();
             $session->token = $this->getToken();
 
-            $this->apiHelper = resolve(IApiHelper::class)->make($session);
+            $this->apiHelper = resolve(IApiHelper::class)->make($session, $session->domain->toNative());
         }
 
         return $this->apiHelper;

@@ -59,7 +59,7 @@ class AuthProxy
         }
 
         // Build a local signature
-        $signatureLocal = createHmac(['data' => $query, 'buildQuery' => true], $this->getConfigApiKey($query['shop']));
+        $signatureLocal = createHmac(['data' => $query, 'buildQuery' => true], $this->getConfigApiSecret($query['shop']));
         if ($signature !== $signatureLocal || $shop->isNull()) {
             // Issue with HMAC or missing shop header
             return Response::make('Invalid proxy signature.', 401);

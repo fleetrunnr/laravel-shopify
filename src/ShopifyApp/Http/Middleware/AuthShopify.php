@@ -45,7 +45,6 @@ class AuthShopify
     {
         $this->shopSession = $shopSession;
         $this->apiHelper = $apiHelper;
-        $this->apiHelper->make();
     }
 
     /**
@@ -62,8 +61,13 @@ class AuthShopify
      */
     public function handle(Request $request, Closure $next)
     {
-        // Grab the domain and check the HMAC (if present)
+        // Grab the domain from request
         $domain = $this->getShopDomainFromData($request);
+
+        // Make a new API helper
+        $this->apiHelper->make(null, $domain->toNative());
+
+        // Check the HMAC (if present)
         $this->verifyHmac($request);
 
         $checks = [];
