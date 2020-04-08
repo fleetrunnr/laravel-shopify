@@ -41,8 +41,8 @@ class ApiHelper implements IApiHelper
         $apiClass = $this->getConfig('api_class');
         $this->api = new $apiClass();
         $this->api
-            ->setApiKey($this->getConfig('api_key'))
-            ->setApiSecret($this->getConfig('api_secret'))
+            ->setApiKey($this->getConfigApiKey($session->domain->toNative()))
+            ->setApiSecret($this->getConfigApiSecret($session->domain->toNative()))
             ->setVersion($this->getConfig('api_version'));
 
         // Enable basic rate limiting?

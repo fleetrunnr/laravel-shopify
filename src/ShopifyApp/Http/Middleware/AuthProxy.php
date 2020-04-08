@@ -58,26 +58,8 @@ class AuthProxy
             unset($query['signature']);
         }
 
-        // Get the api secret based on app mode
-        if($this->getConfig('custom_app_mode')) {
-            // Get the user model
-            $userModel = $this->getConfig('user_model');
-
-            // Try to get the api secret from shop user
-            $shopUser = $userModel::where('name', $query['shop'])->first();
-            if(!$shopUser || ($shopUser && !$shopUser->api_secret)) {
-                // Missing shop API secret
-                return Response::make('Invalid shop api credentials.', 401);
-            }
-
-            $apiSecret = $shopUser->api_secret;
-        } 
-        else {
-            $apiSecret = $this->getConfig('api_secret');
-        }
-
         // Build a local signature
-        $signatureLocal = createHmac(['data' => $query, 'buildQuery' => true], $apiSecret);
+        $signatureLocal = createHmac(['data' => $query, 'buildQuery' => true], $this->getConfigApiKey($query['shop']));
         if ($signature !== $signatureLocal || $shop->isNull()) {
             // Issue with HMAC or missing shop header
             return Response::make('Invalid proxy signature.', 401);

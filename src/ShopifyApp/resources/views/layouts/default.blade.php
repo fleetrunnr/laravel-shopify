@@ -24,7 +24,7 @@
                 var AppBridge = window['app-bridge'];
                 var createApp = AppBridge.default;
                 var app = createApp({
-                    apiKey: '{{ config('shopify-app.custom_app_mode') ? Auth::user()->api_key : config('shopify-app.api_key') }}',
+                    apiKey: '{{ config('shopify-app.custom_app_mode') ? Auth::user()->shopify_api_key : config('shopify-app.api_key') }}',
                     shopOrigin: '{{ Auth::user()->name }}',
                     forceRedirect: true,
                 });

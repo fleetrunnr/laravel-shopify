@@ -48,11 +48,17 @@ class StoreUsageCharge extends FormRequest
             $signature = $data['signature'];
             unset($data['signature']);
 
-            // Confirm the charge hasn't been tampered with
-            $signatureLocal = createHmac(['data' => $data, 'buildQuery' => true], $this->getConfig('api_secret'));
-            if (!hash_equals($signature, $signatureLocal)) {
-                // Possible tampering
-                $validator->errors()->add('signature', 'Signature does not match.');
+            // If custom mode is set, this is an unsupported operation
+            if($this->getConfig('custom_app_mode')) {
+                $validator->errors()->add('api_secret', 'Not supported when in custom app mode.');
+            }
+            else {
+                // Confirm the charge hasn't been tampered with
+                $signatureLocal = createHmac(['data' => $data, 'buildQuery' => true], $this->getConfig('api_secret'));
+                if (!hash_equals($signature, $signatureLocal)) {
+                    // Possible tampering
+                    $validator->errors()->add('signature', 'Signature does not match.');
+                }
             }
         });
     }

@@ -14,6 +14,8 @@ class CreateShopsTable extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('shopify_api_key')->nullable();
+            $table->string('shopify_api_secret')->nullable();
             $table->boolean('shopify_grandfathered')->default(false);
             $table->string('shopify_namespace')->nullable(true)->default(null);
             $table->boolean('shopify_freemium')->default(false);
@@ -35,6 +37,8 @@ class CreateShopsTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign('users_plan_id_foreign');
             $table->dropColumn([
+                'shopify_api_key',
+                'shopify_api_secret',
                 'shopify_grandfathered',
                 'shopify_namespace',
                 'shopify_freemium',
