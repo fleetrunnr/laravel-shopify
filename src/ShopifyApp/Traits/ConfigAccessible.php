@@ -56,12 +56,16 @@ trait ConfigAccessible
     /**
      * Helper function to get API key from shop (if custom mode) or from config
      * 
-     * @param string $shop
+     * @param string|null $shop
      * 
      * @return string $api_key
      */
-    public function getConfigApiKey(string $shop): string
+    public function getConfigApiKey($shop): string
     {
+        if(!$shop) {
+            return '';
+        }
+
         if(!Config::get('shopify-app.custom_app_mode')) {
             return Config::get('shopify-app.api_key');
         }
@@ -76,12 +80,16 @@ trait ConfigAccessible
     /**
      * Helper function to get API secret from shop (if custom mode) or from config
      * 
-     * @param string $shop
+     * @param string|null $shop
      * 
      * @return string $api_secret
      */
-    public function getConfigApiSecret(string $shop): string
+    public function getConfigApiSecret($shop): string
     {
+        if(!$shop) {
+            return '';
+        }
+
         if(!Config::get('shopify-app.custom_app_mode')) {
             return Config::get('shopify-app.api_secret');
         }

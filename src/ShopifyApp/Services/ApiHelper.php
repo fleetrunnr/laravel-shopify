@@ -35,7 +35,7 @@ class ApiHelper implements IApiHelper
     /**
      * {@inheritdoc}
      */
-    public function make(ApiSessionTransfer $session = null, string $shop = null): self
+    public function make(ApiSessionTransfer $session = null, $shop = null): self
     {
         // Try to get the api key and secret from shop (if custom mode is on) or from config
         $apiKey = $this->getConfig('custom_app_mode') ? $this->getConfigApiKey($shop) : $this->getConfig('api_key');
